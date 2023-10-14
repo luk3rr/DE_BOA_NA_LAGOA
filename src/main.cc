@@ -10,17 +10,21 @@
 #include <cstdio>
 #include <iostream>
 #include <cstdlib>
+#include <limits>
 
 #include "graph.h"
+#include "vertex.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     std::size_t numVertices, numEdges;
 
     scanf("%zu %zu", &numVertices, &numEdges);
 
     geom::Graph graph(numVertices, numEdges);
 
-    for (std::size_t i = 0; i < numVertices; i++) {
+    for (std::size_t i = 0; i < numVertices; i++)
+    {
         // Vertex is created with ID i
         graph.AddVertex(geom::Vertex(i));
     }
@@ -28,10 +32,16 @@ int main(int argc, char *argv[]) {
     std::size_t u, v; // Vertices u and v
     uint32_t constructionYear, crossingTime, buildCost;
 
-    for (std::size_t i = 0; i < numEdges; i++) {
+    for (std::size_t i = 0; i < numEdges; i++)
+    {
         scanf("%zu %zu %u %u %u", &u, &v, &constructionYear, &crossingTime, &buildCost);
-        graph.AddEdge(u, v, constructionYear, crossingTime, buildCost);
+        graph.AddEdge(u - 1, v - 1, constructionYear, crossingTime, buildCost);
     }
+
+    std::size_t palaceIndex = 0;
+    graph.Dijkstra(palaceIndex, Defs::EDGE_INFO::TIME);
+    //graph.PrimMST(palaceIndex, Defs::EDGE_INFO::YEAR);
+    //graph.PrimMST(palaceIndex, Defs::EDGE_INFO::COST);
 
     return EXIT_SUCCESS;
 }

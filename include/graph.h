@@ -7,23 +7,33 @@
 #ifndef GRAPH_H_
 #define GRAPH_H_
 
+#include <cstdio>
 #include <cstddef>
-#include <math.h>
 #include <cstdint>
-#include <iostream>
+#include <cmath>
+#include <math.h>
+#include <memory>
 #include <utility>
 #include <algorithm>
 #include <iterator>
+#include <iostream>
+
 #include <string>
+#include <queue>
+#include <utility>
+#include <vector>
+#include <memory>
 
+#include "edge.h"
 #include "vertex.h"
-#include "vector.h"
 
-namespace geom {
-    class Graph {
+namespace geom
+{
+    class Graph
+    {
         private:
-            Vector<Vertex> m_vertices; // Each vector position is the vertex ID
-            size_t m_numEdges; // number of edges in this graph
+            std::vector<Vertex> m_vertices; // Each vector position is the vertex ID
+            std::size_t m_numEdges; // number of edges in this graph
 
         public:
             /**
@@ -50,6 +60,29 @@ namespace geom {
              **/
             void AddEdge(std::size_t vertexID, std::size_t neighborID, uint32_t constructionYear,
                          uint32_t crossingTime, uint32_t buildCost);
+
+            /**
+             * @brief Relax the edge (u, v)
+             * @param u, v Vertices of this edge
+             * @param uv Pointer to the edge (u, v)
+             * @param edgeInfo Type of cost considered in the shortest path calculation
+             **/
+            bool Relax(Vertex* u, Vertex* v, std::shared_ptr<Edge> uv, Defs::EDGE_INFO edgeInfo);
+
+            /**
+             * @brief Run Dijkstra's algorithm to find the shortest paths from a given source vertex
+             * @param source The source vertex from which to calculate the shortest paths
+             * @param edgeInfo Type of cost considered in the shortest path calculation
+             **/
+            void Dijkstra(std::size_t source, Defs::EDGE_INFO edgeInfo);
+
+            /**
+             * @brief Run Prim's algorithm to find Minimum Spanning Tree starting from a given
+             *        source vertex
+             * @param source The source vertex from which to begin the MST calculation
+             * @param edgeInfo Type of cost considered in the MST calculation
+             **/
+            void PrimMST(std::size_t source, Defs::EDGE_INFO edgeInfo);
     };
 }
 

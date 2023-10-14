@@ -8,22 +8,31 @@
 #define EDGE_H_
 
 #include <cmath>
+#include <cstddef>
 #include <cstdint>
+#include <utility>
+#include <iostream>
 
-namespace geom {
-    class Edge {
+#include "definitions.h"
+
+namespace geom
+{
+    class Edge
+    {
         private:
-            uint32_t m_dest; // ID of the destination vertex of this edge
+            std::pair<std::size_t, std::size_t> m_vertices; // Store vertices ID
             uint32_t m_constructionYear; // Year in which the edge construction was completed
             uint32_t m_crossingTime; // Traversal time (cost) of the edge
             uint32_t m_buildCost; // Construction cost of the edge
 
         public:
-            Edge(uint32_t dest);
+            Edge(uint32_t sideA, uint32_t sideB);
+            Edge(uint32_t sideA, uint32_t sideB, uint32_t constructionYear,
+                 uint32_t crossingTime, uint32_t buildCost);
             ~Edge();
 
             /**
-             * @brief
+             * @brief Overload operator <
              **/
             bool operator<(const Edge &other);
 
@@ -58,9 +67,15 @@ namespace geom {
             uint32_t GetBuildCost();
 
             /**
-             * @return ID of the destination vertex of this edge
+             * @param info Type of the info
+             * @return A specified cost, according the info parameter
              **/
-            uint32_t GetDest();
+            uint32_t GetSpecifiedCost(Defs::EDGE_INFO info);
+
+            /**
+             * @return std::pair<a, b>, where a, b are the vertices ID
+             **/
+            std::pair<std::size_t, std::size_t> GetVertices();
     };
 }
 

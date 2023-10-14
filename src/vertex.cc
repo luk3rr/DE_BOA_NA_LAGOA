@@ -7,54 +7,109 @@
 #include "vertex.h"
 
 namespace geom {
-    Vertex::Vertex() {
+    Vertex::Vertex()
+    {
         this->m_x = this->m_y = this->m_id = 0;
+        this->m_visited = false;
+        this->m_edge2Father = nullptr;
     }
 
-    Vertex::Vertex(std::size_t id) {
+    Vertex::Vertex(std::size_t id)
+    {
         this->m_x = this->m_y = 0;
         this->m_id = id;
+        this->m_visited = false;
+        this->m_edge2Father = nullptr;
     }
 
-    Vertex::Vertex(double_t x, double_t y, std::size_t id) {
+    Vertex::Vertex(double_t x, double_t y, std::size_t id)
+    {
         this->m_x = x;
         this->m_y = y;
         this->m_id = id;
+        this->m_visited = false;
+        this->m_edge2Father = nullptr;
     }
 
-    bool Vertex::operator==(const Vertex &vertex) const {
+    Vertex::~Vertex() { }
+
+    bool Vertex::operator==(const Vertex &vertex) const
+    {
         return (this->m_x == vertex.m_x and this->m_y == vertex.m_y);
     }
 
-    void Vertex::SetX(double_t x) {
+    bool Vertex::operator<(const Vertex &other) const
+    {
+        return (this->m_cost < other.m_cost);
+    }
+
+    void Vertex::SetX(double_t x)
+    {
         this->m_x = x;
     }
 
-    void Vertex::SetY(double_t y) {
+    void Vertex::SetY(double_t y)
+    {
         this->m_y = y;
     }
 
-    void Vertex::SetID(std::size_t id) {
+    void Vertex::SetID(std::size_t id)
+    {
         this->m_id = id;
     }
 
-    double_t Vertex::GetX() {
+    void Vertex::SetCost(std::size_t cost)
+    {
+        this->m_cost = cost;
+    }
+
+    void Vertex::SetVisited(bool isVisited)
+    {
+        this->m_visited = isVisited;
+    }
+
+    void Vertex::SetEdge2Father(std::shared_ptr<Edge> edge)
+    {
+        this->m_edge2Father = edge;
+    }
+
+    double_t Vertex::GetX()
+    {
         return this->m_x;
     }
 
-    double_t Vertex::GetY() {
+    double_t Vertex::GetY()
+    {
         return this->m_y;
     }
 
-    uint32_t Vertex::GetDegree() {
-        return this->m_neighbors.size();
+    uint32_t Vertex::GetDegree()
+    {
+        return this->m_adjList.size();
     }
 
-    std::size_t Vertex::GetID() {
+    std::size_t Vertex::GetID()
+    {
         return this->m_id;
     }
 
-    std::vector<Edge>* Vertex::GetNeighborsList() {
-        return &m_neighbors;
+    std::size_t Vertex::GetCost()
+    {
+        return this->m_cost;
+    }
+
+    std::shared_ptr<Edge> Vertex::GetEdge2Father()
+    {
+        return m_edge2Father;
+    }
+
+    bool Vertex::WasVisited()
+    {
+        return this->m_visited;
+    }
+
+    std::vector<std::shared_ptr<Edge>>* Vertex::GetAdjacencyList()
+    {
+        return &m_adjList;
     }
 }

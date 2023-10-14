@@ -2,6 +2,8 @@
 SRC_DIR = src
 OBJ_DIR = build
 INC_DIR = include
+MODULES_DIR = modules
+INC_SUBMODULES := $(shell find $(MODULES_DIR) -type d -name include)
 BIN_DIR = bin
 TST_DIR = $(SRC_DIR)/tests
 LIB_DIR = $(INC_DIR)/lib
@@ -23,15 +25,32 @@ else
 endif
 
 LIBS = -lm
-CFLAGS = --std=c++20 -O0 -Wall
+CFLAGS = --std=c++20 -O0 -Wall -g
 
 # ARQUIVOS
 MAIN = $(OBJ_DIR)/main.o
-PROGRAM_OBJS := $(shell find $(SRC) -type f -name "*.cc" ! -name "main.cc" ! -name "*test.cc" -exec echo '$(OBJ_DIR)/{}' \; | sed 's/src\///;s/\/\.\//\//;s/\.cc/.o/')
+
+## Objeter o nome de todos os arquivos .o
+PROGRAM_OBJS := $(shell find $(SRC_DIR) -type f -name "*.cc" ! -name "main.cc" ! -name "*test.cc" ! -path "$(MODULES_DIR)/*" -exec echo '$(OBJ_DIR)/{}' \; | sed 's/src\///;s/\/\.\//\//;s/\.cc/.o/')
+
+## Obter o nome de todos os arquivos .o de todos os submódulos
+SUB_MODULES_OBJS := $(shell find $(MODULES_DIR) -type f -name "*.cc" ! -name "main.cc" ! -name "*test.cc" | sed 's/src\//$(OBJ_DIR)\//;s/\.cc/.o/')
+
+## Obter o nome de todos os arquivos .o de teste
 TEST_OBJS := $(shell find $(TST_DIR) -type f -name "*.cc" -exec echo '$(OBJ_DIR)/{}' \; | sed 's/src\/tests\///;s/\/\.\//\//;s/\.cc/.o/')
 
 # CASES
 build: $(OBJ_DIR)/$(PROGRAM_NAME)
+
+submodules:
+	git submodule update --remote --recursive
+
+	@echo "Building submodules..."
+	@for submodule in $(wildcard modules/*); do \
+		echo "Building $$submodule..."; \
+		(cd $$submodule && make); \
+	done
+	@echo "Submodules built"
 
 run: build
 	$(BIN_DIR)/$(PROGRAM_NAME)
@@ -54,9 +73,8 @@ $(OBJ_DIR)/%.o: $(TST_DIR)/%.cc
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc
 	$(CC) -c $(CFLAGS) $< -I $(INC_DIR) -o $@
 
-valgrind: tests build
-	valgrind --leak-check=full $(BIN_DIR)/$(TEST_NAME) > /dev/null
-	valgrind --leak-check=full $(BIN_DIR)/$(PROGRAM_NAME)
+valgrind: build
+	valgrind --leak-check=full $(BIN_DIR)/$(PROGRAM_NAME) < src/tests/inputs/in01.txt
 
 clean:
 	rm -f $(BIN_DIR)/* $(OBJ_DIR)/* gmon.out
