@@ -61,7 +61,7 @@ namespace geom {
         return this->m_buildCost;
     }
 
-    uint32_t Edge::GetSpecifiedCost(Defs::EDGE_INFO info)
+    uint32_t Edge::GetSpecifiedCost(Defs::EDGE_INFO info) const
     {
         switch (info) {
             case Defs::EDGE_INFO::COST:

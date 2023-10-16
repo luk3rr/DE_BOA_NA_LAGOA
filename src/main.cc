@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
 
     std::size_t palaceIndex = 0;
     graph.Dijkstra(palaceIndex, Defs::EDGE_INFO::TIME);
-    //graph.PrimMST(palaceIndex, Defs::EDGE_INFO::YEAR);
-    //graph.PrimMST(palaceIndex, Defs::EDGE_INFO::COST);
+    graph.PrimMST(palaceIndex, Defs::EDGE_INFO::YEAR);
+    graph.PrimMST(palaceIndex, Defs::EDGE_INFO::COST);
 
     return EXIT_SUCCESS;
 }

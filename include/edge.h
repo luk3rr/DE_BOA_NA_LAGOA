@@ -10,6 +10,7 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 #include <utility>
 #include <iostream>
 
@@ -70,13 +71,26 @@ namespace geom
              * @param info Type of the info
              * @return A specified cost, according the info parameter
              **/
-            uint32_t GetSpecifiedCost(Defs::EDGE_INFO info);
+            uint32_t GetSpecifiedCost(Defs::EDGE_INFO info) const;
 
             /**
              * @return std::pair<a, b>, where a, b are the vertices ID
              **/
             std::pair<std::size_t, std::size_t> GetVertices();
     };
+
+    struct CompareEdges
+    {
+        Defs::EDGE_INFO m_edgeInfo;
+
+        CompareEdges(Defs::EDGE_INFO info) : m_edgeInfo(info) { }
+
+        bool operator()(const std::shared_ptr<Edge> e1, const std::shared_ptr<Edge> e2) const
+        {
+            return e1->GetSpecifiedCost(m_edgeInfo) > e2->GetSpecifiedCost(m_edgeInfo);
+        }
+    };
+
 }
 
 #endif // EDGE_H_
