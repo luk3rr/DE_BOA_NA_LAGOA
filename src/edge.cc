@@ -23,7 +23,30 @@ namespace geom {
         this->m_buildCost = buildCost;
     }
 
+    Edge::Edge(const Edge &other)
+    {
+        this->m_vertices = other.m_vertices;
+        this->m_constructionYear = other.m_constructionYear;
+        this->m_crossingTime = other.m_crossingTime;
+        this->m_buildCost = other.m_buildCost;
+        this->m_inTree = other.m_inTree;
+    }
+
     Edge::~Edge() { }
+
+    Edge &Edge::operator=(const Edge &other)
+    {
+        if (this != &other)
+        {
+            this->m_vertices = other.m_vertices;
+            this->m_constructionYear = other.m_constructionYear;
+            this->m_crossingTime = other.m_crossingTime;
+            this->m_buildCost = other.m_buildCost;
+            this->m_inTree = other.m_inTree;
+        }
+
+        return *this;
+    }
 
     bool Edge::operator<(const Edge &other)
     {
@@ -46,6 +69,11 @@ namespace geom {
         this->m_buildCost = newBuildCost;
     }
 
+    void Edge::SetInMST(bool isInTree)
+    {
+        this->m_inTree = isInTree;
+    }
+
     uint32_t Edge::GetConstructionYear()
     {
         return this->m_constructionYear;
@@ -63,7 +91,8 @@ namespace geom {
 
     uint32_t Edge::GetSpecifiedCost(Defs::EDGE_INFO info) const
     {
-        switch (info) {
+        switch (info)
+        {
             case Defs::EDGE_INFO::COST:
                 return this->m_buildCost;
 
@@ -81,5 +110,10 @@ namespace geom {
     std::pair<std::size_t, std::size_t> Edge::GetVertices()
     {
         return this->m_vertices;
+    }
+
+    bool Edge::IsInMST()
+    {
+        return this->m_inTree;
     }
 }

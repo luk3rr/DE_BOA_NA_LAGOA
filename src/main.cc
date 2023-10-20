@@ -4,6 +4,7 @@
 * Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
 */
 
+#include <climits>
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
@@ -11,6 +12,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <limits>
+#include <chrono>
+#include <vector>
 
 #include "graph.h"
 #include "vertex.h"

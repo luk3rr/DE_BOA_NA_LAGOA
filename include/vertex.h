@@ -11,12 +11,12 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
-#include <ostream>
 #include <utility>
-#include <memory>
-#include <vector>
+#include <ostream>
 
 #include "edge.h"
+#include "vector.h"
+#include <vector>
 
 namespace geom
 {
@@ -28,7 +28,7 @@ namespace geom
             std::size_t m_id; // Vertex ID
             std::size_t m_cost; // Cost of this vertex
 
-            std::vector<std::shared_ptr<Edge>> m_adjList; // Adjacency list
+            Vector<std::shared_ptr<Edge>> m_adjList; // Adjacency list
             std::shared_ptr<Edge> m_edge2Father; // Edge connecting to the parent vertex
 
         public:
@@ -43,30 +43,18 @@ namespace geom
             /**
              * @brief Constructor overload
              * @param x, y Point coordinates
-             * @param degree Vertex degree
              * @param id Vertex ID
              */
             Vertex(double_t x, double_t y, std::size_t id);
 
             ~Vertex();
 
-            /**
-             * @brief Overload of the equality operator. For the purposes of this program,
-             *        it is sufficient to consider two vertices equal when their coordinates
-             *        are equal. In other cases, the ID and neighbors may be checked to define
-             *        this equality.
-             * @param other Vertex to be used in the comparison
-             * @return True if the coordinates of the two vertices are equal one by one, False
-             *         otherwise
-             */
+            // Overload operators
             bool operator==(const Vertex &other) const;
-
-            /**
-             * @brief Overload of the less operator. Compares two vertices based on their costs (m_cost)
-             * @param other Vertex to be used in the comparison
-             * @return True if the cost of this vertex is less than the cost of the other vertex, False otherwise
-             */
+            bool operator<=(const Vertex &other) const;
+            bool operator>=(const Vertex &other) const;
             bool operator<(const Vertex &other) const;
+            bool operator>(const Vertex &other) const;
 
             /**
              * @brief Set a new value for the X-coordinate
@@ -127,10 +115,10 @@ namespace geom
             /**
              * @return Value of the cost
              */
-            std::size_t GetCost();
+            std::size_t GetCost() const;
 
             /**
-             * @return A shared pointer to the edge connecting this vertex to its parent
+             * @return A pointer to the edge connecting this vertex to its parent
              */
             std::shared_ptr<Edge> GetEdge2Father();
 
@@ -142,8 +130,17 @@ namespace geom
             /**
              * @return Address of the adjacency list of this vertex
              */
-            std::vector<std::shared_ptr<Edge>>* GetAdjacencyList();
+            Vector<std::shared_ptr<Edge>>* GetAdjacencyList();
+
+            struct CompareVertex
+            {
+                bool operator()(const Vertex* v1, const Vertex* v2) const
+                {
+                    return v1->m_cost < v2->m_cost;
+                }
+            };
     };
+
 }
 
 #endif // VERTEX_H_

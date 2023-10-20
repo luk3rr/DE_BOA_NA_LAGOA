@@ -20,20 +20,18 @@
 
 #include <sys/types.h>
 #include <string>
-#include <queue>
 #include <utility>
-#include <vector>
-#include <memory>
 
 #include "edge.h"
 #include "vertex.h"
+#include "priority_queue_min_heap.h"
 
 namespace geom
 {
     class Graph
     {
         private:
-            std::vector<Vertex> m_vertices; // Each vector position is the vertex ID
+            Vector<Vertex> m_vertices; // Each vector position is the vertex ID
             std::size_t m_numEdges; // number of edges in this graph
 
         public:

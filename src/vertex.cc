@@ -5,8 +5,10 @@
 */
 
 #include "vertex.h"
+#include <memory>
 
-namespace geom {
+namespace geom
+{
     Vertex::Vertex()
     {
         this->m_x = this->m_y = this->m_id = 0;
@@ -35,12 +37,27 @@ namespace geom {
 
     bool Vertex::operator==(const Vertex &vertex) const
     {
-        return (this->m_x == vertex.m_x and this->m_y == vertex.m_y);
+        return (this->m_cost == vertex.m_cost);
+    }
+
+    bool Vertex::operator<=(const Vertex &vertex) const
+    {
+        return (this->m_cost <= vertex.m_cost);
+    }
+
+    bool Vertex::operator>=(const Vertex &vertex) const
+    {
+        return (this->m_cost >= vertex.m_cost);
     }
 
     bool Vertex::operator<(const Vertex &other) const
     {
         return (this->m_cost < other.m_cost);
+    }
+
+    bool Vertex::operator>(const Vertex &other) const
+    {
+        return (this->m_cost > other.m_cost);
     }
 
     void Vertex::SetX(double_t x)
@@ -85,7 +102,7 @@ namespace geom {
 
     uint32_t Vertex::GetDegree()
     {
-        return this->m_adjList.size();
+        return this->m_adjList.Size();
     }
 
     std::size_t Vertex::GetID()
@@ -93,7 +110,7 @@ namespace geom {
         return this->m_id;
     }
 
-    std::size_t Vertex::GetCost()
+    std::size_t Vertex::GetCost() const
     {
         return this->m_cost;
     }
@@ -108,7 +125,7 @@ namespace geom {
         return this->m_visited;
     }
 
-    std::vector<std::shared_ptr<Edge>>* Vertex::GetAdjacencyList()
+    Vector<std::shared_ptr<Edge>>* Vertex::GetAdjacencyList()
     {
         return &m_adjList;
     }

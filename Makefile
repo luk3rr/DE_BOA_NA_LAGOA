@@ -25,7 +25,7 @@ else
 endif
 
 LIBS = -lm
-CFLAGS = --std=c++20 -O0 -Wall -g
+CFLAGS = --std=c++20 -O0 -Wall
 
 # ARQUIVOS
 MAIN = $(OBJ_DIR)/main.o
@@ -48,7 +48,7 @@ submodules:
 	@echo "Building submodules..."
 	@for submodule in $(wildcard modules/*); do \
 		echo "Building $$submodule..."; \
-		(cd $$submodule && make); \
+		(cd $$submodule && make clean && make); \
 	done
 	@echo "Submodules built"
 
@@ -62,19 +62,22 @@ $(OBJ_DIR)/$(TEST_NAME): $(TEST_OBJS) $(PROGRAM_OBJS)
 	$(CC) $(CFLAGS) $(TEST_OBJS) $(PROGRAM_OBJS) -o $(BIN_DIR)/$(TEST_NAME)
 
 $(OBJ_DIR)/$(PROGRAM_NAME): $(PROGRAM_OBJS) $(MAIN)
-	$(CC) $(CFLAGS) $(PROGRAM_OBJS) $(MAIN) -o $(BIN_DIR)/$(PROGRAM_NAME)
+	$(CC) $(CFLAGS) $(PROGRAM_OBJS) $(SUB_MODULES_OBJS) $(MAIN) -o $(BIN_DIR)/$(PROGRAM_NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc $(INC_DIR)/%.h
-	$(CC) -c $(CFLAGS) $< -I $(INC_DIR) -o $@
+	$(CC) -c $(CFLAGS) $< -I $(INC_DIR) -I $(INC_SUBMODULES) -o $@
 
 $(OBJ_DIR)/%.o: $(TST_DIR)/%.cc
 	$(CC) -c $(CFLAGS) $< -I $(INC_DIR) -I $(LIB_DIR) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc
-	$(CC) -c $(CFLAGS) $< -I $(INC_DIR) -o $@
+	$(CC) -c $(CFLAGS) $< -I $(INC_DIR) -I $(INC_SUBMODULES) -o $@
 
 valgrind: build
 	valgrind --leak-check=full $(BIN_DIR)/$(PROGRAM_NAME) < src/tests/inputs/in01.txt
 
 clean:
 	rm -f $(BIN_DIR)/* $(OBJ_DIR)/* gmon.out
+
+uniquefile:
+	cat modules/data_structures/include/queue_excpt.h modules/data_structures/include/vector_excpt.h modules/data_structures/include/utils.h modules/data_structures/include/vector.h modules/data_structures/include/priority_queue.h modules/data_structures/include/priority_queue_min_heap.h include/definitions.h include/edge.h include/vertex.h include/graph.h modules/data_structures/src/queue_excpt.cc modules/data_structures/src/vector_excpt.cc modules/data_structures/src/utils.cc modules/data_structures/src/priority_queue.cc modules/data_structures/src/priority_queue_min_heap.cc modules/data_structures/src/vector.cc src/definitions.cc src/edge.cc src/vertex.cc src/graph.cc src/main.cc | sed '/#include "/d' > allin.cc
