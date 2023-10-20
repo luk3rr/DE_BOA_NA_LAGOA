@@ -5,12 +5,6 @@
 */
 
 #include "graph.h"
-#include "edge.h"
-#include "vector.h"
-#include <cstddef>
-#include <memory>
-#include <queue>
-#include <vector>
 
 namespace geom
 {
@@ -55,7 +49,7 @@ namespace geom
 
     void Graph::Dijkstra(std::size_t source, Defs::EDGE_INFO edgeInfo)
     {
-        heap::MinPQueue<Vertex*, Vertex::CompareVertex> minPQueue;
+        heap::PriorityQueue<Vertex*, Vertex::CompareVertex> minPQueue;
 
         // Initialize all vertex costs to infinity
         // Add all vertices to the priority queue
@@ -117,7 +111,7 @@ namespace geom
 
     void Graph::PrimMST(std::size_t source, Defs::EDGE_INFO edgeInfo)
     {
-        heap::MinPQueue<std::shared_ptr<Edge>, Edge::CompareEdges> minPQueue((Edge::CompareEdges(edgeInfo)));
+        heap::PriorityQueue<std::shared_ptr<Edge>, Edge::CompareEdges> minPQueue((Edge::CompareEdges(edgeInfo)));
 
         // Auxiliar variables to make code most legible
         std::shared_ptr<Edge> u = nullptr;

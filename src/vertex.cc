@@ -5,7 +5,6 @@
 */
 
 #include "vertex.h"
-#include <memory>
 
 namespace geom
 {

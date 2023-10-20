@@ -10,21 +10,13 @@
 #include <cstdio>
 #include <cstddef>
 #include <cstdint>
-#include <cmath>
-#include <math.h>
-#include <memory>
-#include <utility>
-#include <algorithm>
-#include <iterator>
-#include <iostream>
 
-#include <sys/types.h>
-#include <string>
-#include <utility>
+#include <cmath>
+#include <memory>
 
 #include "edge.h"
 #include "vertex.h"
-#include "priority_queue_min_heap.h"
+#include "priority_queue_heap.h"
 
 namespace geom
 {

@@ -7,11 +7,11 @@
 #ifndef EDGE_H_
 #define EDGE_H_
 
-#include <cmath>
 #include <cstddef>
 #include <cstdint>
+#include <cmath>
+
 #include <memory>
-#include <utility>
 #include <iostream>
 
 #include "definitions.h"

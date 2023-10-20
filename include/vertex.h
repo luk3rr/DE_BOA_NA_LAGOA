@@ -7,16 +7,14 @@
 #ifndef VERTEX_H_
 #define VERTEX_H_
 
-#include <cmath>
 #include <cstddef>
 #include <cstdint>
+
+#include <cmath>
 #include <memory>
-#include <utility>
-#include <ostream>
 
 #include "edge.h"
 #include "vector.h"
-#include <vector>
 
 namespace geom
 {

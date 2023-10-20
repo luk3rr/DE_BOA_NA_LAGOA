@@ -4,19 +4,12 @@
 * Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
 */
 
-#include <climits>
-#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
-#include <iostream>
 #include <cstdlib>
-#include <limits>
-#include <chrono>
-#include <vector>
 
 #include "graph.h"
-#include "vertex.h"
 
 int main(int argc, char *argv[])
 {
