@@ -131,7 +131,6 @@ namespace geom
             for (std::size_t j = 0; j < uAdjList->Size(); j++)
             {
                 uAdjList->At(j)->SetInMST(false);
-                minPQueue.Enqueue(uAdjList->At(j));
             }
         }
 
