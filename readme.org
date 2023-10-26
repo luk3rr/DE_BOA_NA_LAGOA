@@ -1,0 +1,68 @@
+* DE_BOA_NA_LAGOA
+"DE_BOA_NA_LAGOA" is a program that takes a weighted graph $G = (V, E)$ and applies Dijkstra's and Prim's algorithms to find solutions to optimization questions. This program is the outcome of a practical activity in the Algorithms I course offered by the [[https://dcc.ufmg.br/][Department of Computer Science at UFMG]].
+
+* Table of Contents
++ [[#Problems][Problems]]
++ [[#Solutions][Solutions]]
++ [[#Compiling][Compiling]]
++ [[#Execution][Execution]]
++ [[#Input][Input]]
++ [[#Output][Output]]
++ [[#Documentation][Documentation]]
+
+* Problems
+Each edge in the graph is assigned three costs within the specified ranges:
+
+1. Construction Year [ $1, 10^8$ ]
+2. Crossing Time [ $1, 10^5$ ]
+3. Construction Cost [ $1, 10^5$ ]
+
+An example of edge costs: The edge (a, b) has a construction cost of 3, a crossing time of 4, and was built in the year 5.
+
+[[file:img/readme_edge-cost.png]]
+
+The following problems need to be solved:
+
+1. What is the minimum time to travel from vertex 0 to vertex $i$?
+2. Given the minimum path found in the previous problem, what is the first year when all paths are available?
+3. What is the first year when it is possible to travel from vertex 0 to any other vertex?
+4. What is the minimum cost to connect all vertices?
+
+* Solutions
+For each of the mentioned problems, the employed solutions were as follows:
+
+1. Since the costs are always positive, we can use the Dijkstra algorithm, considering the /crossing time/ as the cost.
+2. Again, we can use Dijkstra, considering the /crossing time/ as the cost. Then, we look among the edges of the minimum path for the one with the highest construction year.
+3. Here, the problem is that of Minimum Spanning Tree (MST). To solve it, we employ the Prim algorithm, considering the /construction year/ as the cost. In the end, we look among the edges of the MST for the one with the highest construction year.
+4. The fourth problem is similar to the third. Again, we use the Prim algorithm to find the MST, but now considering the /construction cost/ as the cost. Finally, we sum the costs of all the edges in the MST.
+
+* Compiling
+This program can be compiled using the following command:
+
+#+BEGIN_SRC sh
+$ make build
+#+END_SRC
+
+Note: The program was developed and tested using g++12. Make sure to use this compiler version.
+* Execution
+The execution can be performed either through the Makefile: =make run=
+
+or by directly running the executable: =bin/program=
+* Input
+The first line contains two integers, $N$ and $M$, which represent the number of vertices and edges in the input graph $G$, such that $1 \le N$, $M \le 10^6$.
+
+Each of the following $M$ lines describes a connection between a pair of vertices and contains five integers $u, v, a, l, c$, where $u$ and $v$ are the vertices ($1 \le u \ne v \le N$), $a$ is the construction year of the edge, $l$ represents the crossing time of the edge, and $c$ represents its construction cost. The program's starting year is defined as $0$.
+
+* Output
+The output contains multiple lines.
+
+For the $i$-th line among the first $N$ lines, an integer should be printed representing the minimum time required to travel from vertex $0$ to vertex $i$.
+
+On the $(N + 1)$-th line of the output, a single integer $A_1$ should be printed, representing the first year in which the distances listed in the previous lines become mutually achievable.
+
+The $(N + 2)$-th line of the output contains a single integer $A_2$, representing the first year from which it is possible to reach any vertex of the graph from vertex $0$.
+
+Finally, on line $N + 3$, a single integer should be printed, representing the minimum cost required to connect the entire graph.
+
+* Documentation
+The statement for this assignment can be read [[https://github.com/luk3rr/PLANAR_GRAPH_FACE_FINDER/tree/main/docs][here]].
